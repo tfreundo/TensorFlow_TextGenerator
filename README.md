@@ -5,6 +5,7 @@ Free ebooks to use as input dataset can for example be found at the awesome [Pro
 
 ## Configuration
 The most relevant parameters and settings are configurable via the [config.json](config.json) file.
+For most scenarios you don't actually have to edit the code yourself, just the config.
 
 * __preprocessing__: Parameters specific to the preprocessing phase
   * __exec_preprocessing__: Whether preprocessing should be exectued or not
@@ -29,3 +30,9 @@ The most relevant parameters and settings are configurable via the [config.json]
   * __exec_generation__: Whether generation should be exectued or not
   * __text_chars_length__: The length of the text in chars that should be generated
   * __foldername__: The folder where the resulting generated text should be stored
+  
+  ## Class Overview
+  * __generator.py__: The class that generates text, also includes the main-function
+  * __preprocessing.py__: The class that encapsulates the preprocessing phase
+  * __training.py__: The class that encapsulates the training phase
+  * __filehelper.py__: The helper class that handles all file specific tasks (e.g. read/write checkpoints, loading config etc.)
