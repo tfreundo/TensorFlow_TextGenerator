@@ -31,8 +31,8 @@ For most scenarios you don't actually have to edit the code yourself, just the c
   * __text_chars_length__: The length of the text in chars that should be generated
   * __foldername__: The folder where the resulting generated text should be stored
   
-  ## Class Overview
-  * __generator.py__: The class that generates text, also includes the main-function
-  * __preprocessing.py__: The class that encapsulates the preprocessing phase
-  * __training.py__: The class that encapsulates the training phase
-  * __filehelper.py__: The helper class that handles all file specific tasks (e.g. read/write checkpoints, loading config etc.)
+## Class Overview
+* __generator.py__: The class that generates text, also includes the main-function
+* __preprocessing.py__: The class that encapsulates the preprocessing phase
+* __training.py__: The class that encapsulates the training phase
+* __filehelper.py__: The helper class that handles all file specific tasks (e.g. read/write checkpoints, loading config etc.)
