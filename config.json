@@ -4,8 +4,8 @@
         "input_file": "data/aliceInWonderland.txt",
         "sequence_chars_length": 100,
         "checkpoints": {
-            "char2indexDict_file": "preprocessingCheckpoints/char2indexDict",
-            "index2charDict_file": "preprocessingCheckpoints/index2charDict",
+            "char2intDict_file": "preprocessingCheckpoints/char2intDict",
+            "int2charDict_file": "preprocessingCheckpoints/int2charDict",
             "vocabulary_file": "preprocessingCheckpoints/vocab",
             "X_file": "preprocessingCheckpoints/X",
             "Y_file": "preprocessingCheckpoints/Y"
@@ -14,6 +14,10 @@
     "training": {
         "exec_training": true,
         "load_weights_filename": "trainingCheckpoints/weights-ep_02-loss_2.7879.hdf5",
+        "lstm_units": 256,
+        "dropout_probability": 0.2,
+        "epochs_qty": 1,
+        "batch_size": 128,
         "checkpoints":{
             "foldername": "trainingCheckpoints"   
         }

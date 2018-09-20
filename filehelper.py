@@ -1,4 +1,3 @@
-# Used to save processing steps (e.g. the text patterns generated) to save some processing costs/time while developing
 import pickle
 import json
 

@@ -6,7 +6,7 @@ class Preprocessing:
     def __init__(self, config):
         self.config = config
 
-    def generate_char_to_index_dictionary(self, data):
+    def generate_char_to_int_dictionary(self, data):
         """Creates the mapping of unique characters to unique integers
         """
         # Sets are unordered collections of unique elements
@@ -25,7 +25,7 @@ class Preprocessing:
         return dict((character, index) for index, character in enumerate(vocab))
 
 
-    def generate_index_to_char_dictionary(self, data):
+    def generate_int_to_char_dictionary(self, data):
         """Creates the mapping of unique integers to unique characters
         """
         # Sets are unordered collections of unique elements
@@ -43,7 +43,7 @@ class Preprocessing:
         return map
 
 
-    def generate_training_patterns(self, data, char2indexDict, saveToFile=False):
+    def generate_training_patterns(self, data, char2intDict, saveToFile=False):
         """Generates the mapping between the input and output pairs enconded as integers.
         The length of the sequence is used to determine the first sequence, afterwards the window is sliding one index further (always with window size = length of sequence)
         """
@@ -62,9 +62,9 @@ class Preprocessing:
             seq_output = data[i + seq_length]
 
             # Append the integers for each char in the input sequence to X
-            X.append([char2indexDict[character] for character in seq_input])
+            X.append([char2intDict[character] for character in seq_input])
             # Append the according integer of the next character that succeeds the input sequence
-            Y.append(char2indexDict[seq_output])
+            Y.append(char2intDict[seq_output])
 
         print('Generated %d Patterns from data' % len(X))
 
@@ -81,18 +81,18 @@ class Preprocessing:
         raw_data = FileHelper.read_data_lower(
             self.config['preprocessing']['input_file'])
         # Model the characters as integers
-        char2indexDict = self.generate_char_to_index_dictionary(raw_data)
+        char2intDict = self.generate_char_to_int_dictionary(raw_data)
         # FileHelper.save_object_to_file('preprocessingCheckpoints/char2indexDict', char2indexDict)
         FileHelper.save_object_to_file(
-            self.config['preprocessing']['checkpoints']['char2indexDict_file'], char2indexDict)
-        index2CharDict = self.generate_index_to_char_dictionary(raw_data)
+            self.config['preprocessing']['checkpoints']['char2intDict_file'], char2intDict)
+        int2CharDict = self.generate_int_to_char_dictionary(raw_data)
         FileHelper.save_object_to_file(
-            self.config['preprocessing']['checkpoints']['index2charDict_file'], index2CharDict)
+            self.config['preprocessing']['checkpoints']['int2charDict_file'], int2CharDict)
 
         # Generate the text patterns
-        X, Y = self.generate_training_patterns(raw_data, char2indexDict)
+        X, Y = self.generate_training_patterns(raw_data, char2intDict)
         end = datetime.datetime.now()
         deltaTime = end-start
         print('Preprocessing finished: %ds' % deltaTime.total_seconds())
 
-        return X, Y, char2indexDict, index2CharDict
+        return X, Y, char2intDict, int2CharDict

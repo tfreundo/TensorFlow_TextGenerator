@@ -13,13 +13,14 @@ class Training:
         self.config = config
 
     def define_model(self, X, Y):
-        # Define the LSTM Model
-        # TODO Research what this all means
+        # Sequential model
         self.model = Sequential()
-        self.model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2])))
-        # TODO What is the Dropout?
-        self.model.add(Dropout(0.2))
-        # TODO Why softmax and what does it mean? What does the Dense Layer do?
+        # Dimensionality of the output space
+        lstm_units = self.config['training']['lstm_units']
+        self.model.add(LSTM(lstm_units, input_shape=(X.shape[1], X.shape[2])))
+        # For a given probability (here 20%) the results are excluded from activation (reducing overfitting and improving model performance)
+        self.model.add(Dropout(self.config['training']['dropout_probability']))
+        # Dense/fully connected layer (every input is connected to every output by a weight)
         self.model.add(Dense(Y.shape[1], activation='softmax'))
         return self.model
 
@@ -29,8 +30,6 @@ class Training:
 
         print('Starting Training Phase...')
         start = datetime.datetime.now()
-
-        # TODO Do some research on the possible loss functions and optimizers
         self.model.compile(loss='categorical_crossentropy', optimizer='adam')
 
         # Due to the slowness of the learning we are using callbacks that saves weights to a file if an improvement in loss was achieved
@@ -38,11 +37,12 @@ class Training:
         callbackslist = [ModelCheckpoint(
             filename, monitor='loss', verbose=1, save_best_only=True, mode='min')]
 
-        # TODO Epochs = 20
         # epochs = Number of epochs to train the model (a single epoch is an iteration over the entire X and Y data)
         # batch-size = Number of samples per gradient update (faster for higher batch-sizes) default: 32
         # callbacks = List of Keras Callbacks to call while training (after each epoch)
-        self.model.fit(X, Y, epochs=2, batch_size=128, callbacks=callbackslist)
+        epochs_qty = self.config['training']['epochs_qty']
+        batchsize = self.config['training']['gradient_batch_size']
+        self.model.fit(X, Y, epochs=epochs_qty, batch_size=batchsize, callbacks=callbackslist)
 
         # As we are just predicting the next value, there is NO TEST DATA to evaluate against!
 

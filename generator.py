@@ -20,17 +20,6 @@ from keras.layers import LSTM
 from keras.callbacks import ModelCheckpoint
 from keras.utils import np_utils
 
-# The length of a the sequence to use as input length for training
-#TRAINING_SEQ_LENGTH = 100
-# Whether the data necessary for training should be loaded from previous checkpoints (= True) or calculated (= False)
-#LOAD_TRAININGDATA_FROM_CHECKPOINTS = True
-# Whether previously trained weights should be used (= True) or new weights should be trained
-#LOAD_TRAINING_WEIGHTS_FROM_CHECKPOINT = True
-#LOAD_TRAINING_WEIGHTS_FROM_CHECKPOINT_FILE = 'trainingCheckpoints/weights-ep_02-loss_2.7879.hdf5'
-
-# The length of the text that should be generated (in chars)
-#GENERATION_TEXT_LENGTH = 1000
-
 
 def generate_random_seed(X):
     """Generates a random seed used as starting value from the text generation.
@@ -43,7 +32,7 @@ def generate_random_seed(X):
     return seed
 
 
-def generate_text(desiredTextLength, index2charDict, vocabulary, seed, model):
+def generate_text(desiredTextLength, int2charDict, vocabulary, seed, model):
     """Generates text based on the learned text
     """
     print('Starting Text-Generation Phase...')
@@ -53,11 +42,10 @@ def generate_text(desiredTextLength, index2charDict, vocabulary, seed, model):
     for i in range(desiredTextLength):
         x = numpy.reshape(seed, (1, len(seed), 1))
         x = x / float(len(vocabulary))
-        # TODO Could deactivate verbose here
         prediction = model.predict(x, verbose=1)
         # Find the prediction with the highest probability
         predictedIndex = numpy.argmax(prediction)
-        predictedChar = index2charDict[predictedIndex]
+        predictedChar = int2charDict[predictedIndex]
         text += str(predictedChar)
         # Append the new predicted char to the seed and repredict the following sequence
         seed.append(predictedIndex)
@@ -73,8 +61,8 @@ def generate_text(desiredTextLength, index2charDict, vocabulary, seed, model):
 def main():
     X = []
     Y = []
-    char2indexDict = None
-    index2charDict = None
+    char2intDict = None
+    int2charDict = None
     vocabulary = None
     config = FileHelper.load_config('config.json')
 
@@ -86,19 +74,18 @@ def main():
             config['preprocessing']['checkpoints']['X_file'])
         Y = FileHelper.load_object_from_file(
             config['preprocessing']['checkpoints']['Y_file'])
-        char2indexDict = FileHelper.load_object_from_file(
-            config['preprocessing']['checkpoints']['char2indexDict_file'])
-        index2charDict = FileHelper.load_object_from_file(
-            config['preprocessing']['checkpoints']['index2charDict_file'])
+        char2intDict = FileHelper.load_object_from_file(
+            config['preprocessing']['checkpoints']['char2intDict_file'])
+        int2charDict = FileHelper.load_object_from_file(
+            config['preprocessing']['checkpoints']['int2charDict_file'])
     else:
         preprocessing = Preprocessing(config)
-        X, Y, char2indexDict, index2charDict = preprocessing.preprocess()
+        X, Y, char2intDict, int2charDict = preprocessing.preprocess()
         FileHelper.save_object_to_file(
             config['preprocessing']['checkpoints']['X_file'], X)
         FileHelper.save_object_to_file(
             config['preprocessing']['checkpoints']['Y_file'], Y)
 
-    # TODO Good idea to always load it from file?
     vocabulary = FileHelper.load_object_from_file(
         config['preprocessing']['checkpoints']['vocabulary_file'])
 
@@ -118,7 +105,7 @@ def main():
 
     if config['training']['exec_training']:
         # Train the model
-        model = training.train(X, Y, char2indexDict, vocabulary, model)
+        model = training.train(X, Y, char2intDict, vocabulary, model)
     else:
         # Just set the previously trained weights for the model
         model.load_weights(config['training']['load_weights_filename'])
@@ -128,7 +115,7 @@ def main():
         # Generate the random seed used as starting value for text generation
         seed = generate_random_seed(X_unshaped)
         generatedText = generate_text(
-            config['generation']['text_chars_length'], index2charDict, vocabulary, seed, model)
+            config['generation']['text_chars_length'], int2charDict, vocabulary, seed, model)
 
         # Save the generated text to file
         outputFilename = config['generation']['foldername'] + '/' + \
