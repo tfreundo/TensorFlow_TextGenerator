@@ -6,7 +6,7 @@ Free ebooks to use as input dataset can for example be found at the awesome [Pro
 ## Quick Start
 1. Download this repository as .zip or via git clone
 2. Install requirements: ``` pip install -r stable-req.txt ``` (requirements were generated using ``` pip freeze ```)
-3. Add a text file to data
+3. Add a text file to data (don't forget to remove header and footer e.g. used in Project Gutenberg files)
 4. Edit the [config.json](config.json) file accordingly
 5. Start the generator (with preprocessing, training and generation if it's your first start) using ``` python generator.py ```
 
