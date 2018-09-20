@@ -17,7 +17,7 @@
         "lstm_units": 256,
         "dropout_probability": 0.2,
         "epochs_qty": 1,
-        "batch_size": 128,
+        "gradient_batch_size": 128,
         "checkpoints":{
             "foldername": "trainingCheckpoints"   
         }
