@@ -3,6 +3,10 @@ A Text-Generator that uses TensorFlow to train a LSTM model for a given text fil
 This code was created as a private project while learning machine learning concepts. Therefore not everything is perfectly implemented and fully configurable, but has enough possibilities to play around and experiment with different settings. 
 Free ebooks to use as input dataset can for example be found at the awesome [Project Gutenberg](https://www.gutenberg.org/).
 
+## Quick Start
+1. Download this repository as .zip or via git clone
+2. Install requirements: ``` pip install -r stable-req.txt ``` (requirements were generated using ``` pip freeze ```)
+
 ## Configuration
 The most relevant parameters and settings are configurable via the [config.json](config.json) file.
 For most scenarios you don't actually have to edit the code yourself, just the config.
