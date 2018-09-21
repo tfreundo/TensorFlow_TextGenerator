@@ -54,3 +54,55 @@ For most scenarios you don't actually have to edit the code yourself, just the c
 * __preprocessing.py__: The class that encapsulates the preprocessing phase
 * __training.py__: The class that encapsulates the training phase
 * __filehelper.py__: The helper class that handles all file specific tasks (e.g. read/write checkpoints, loading config etc.)
+
+## Example Result
+Using this configuration:
+```
+{
+    "preprocessing": {
+        "exec_preprocessing": true,
+        "input_file": "data/aliceInWonderland.txt",
+        "sequence_chars_length": 100,
+        "checkpoints": {
+            "char2intDict_file": "preprocessingCheckpoints/char2intDict",
+            "int2charDict_file": "preprocessingCheckpoints/int2charDict",
+            "vocabulary_file": "preprocessingCheckpoints/vocab",
+            "X_file": "preprocessingCheckpoints/X",
+            "Y_file": "preprocessingCheckpoints/Y"
+        }
+    },
+    "training": {
+        "exec_training": true,
+        "load_weights_filename": "trainingCheckpoints/weights-ep_10-loss_2.1012.hdf5",
+        "lstm_units": 256,
+        "dropout_probability": 0.2,
+        "epochs_qty": 10,
+        "gradient_batch_size": 128,
+        "checkpoints":{
+            "foldername": "trainingCheckpoints"
+        }
+    },
+    "generation": {
+        "exec_generation": true,
+        "text_chars_length": 1000,
+        "foldername": "result"
+    }
+}
+
+
+```
+
+and a random seed, this output could be generated:
+
+```
+‘i dan a latter ’ said the date pirelee to aerce an an anine  ‘in
+the koot oo the woile ’ and the woile worhe to the worle to ber toee
+ano the woole  an anl the woole  and toee
+‘i can a latter ’ said the doyphon, ‘i wonld to toe toee ’
+```
+
+Obviously this is no perfect english and doesn't really make sense.
+But regarding that the NN had no prior knowledge about languages, terms, or even that you use high quotes for indicating that someone said something, it learned in a really short time (just 10 epochs) how the main structure of text should look like.
+
+If you would further tune the parameters you would get way better results than that.
+But for a basic tutorial and first hands on, I think this should be enough.
