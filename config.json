@@ -16,7 +16,7 @@
         "load_weights_filename": "trainingCheckpoints/weights-ep_02-loss_2.7879.hdf5",
         "lstm_units": 256,
         "dropout_probability": 0.2,
-        "epochs_qty": 1,
+        "epochs_qty": 10,
         "gradient_batch_size": 128,
         "checkpoints":{
             "foldername": "trainingCheckpoints"   
