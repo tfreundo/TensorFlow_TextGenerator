@@ -14,6 +14,12 @@ Caveat: The Dropout is not visualized here!
 4. Edit the [config.json](config.json) file accordingly
 5. Start the generator (with preprocessing, training and generation if it's your first start) using ``` python generator.py ```
 
+After your first training you can use the previously trained checkpoints to just generate data.
+Therefore edit the [config.json](config.json) file:
+* Disable preprocessing (```exec_preprocessing``` to ```false```) and training (```exec_training``` to ```false```)
+* Set the wights to use to the weights checkpoint (```load_weights_filename```) to the the lowest loss X in epoch Y (```trainingsCheckpoints/weights_ep_YYY-loss_X.XXX.hdf5```)
+* Enable generation (```exec_generation``` to ```true```)
+
 ## Configuration
 The most relevant parameters and settings are configurable via the [config.json](config.json) file.
 For most scenarios you don't actually have to edit the code yourself, just the config.
